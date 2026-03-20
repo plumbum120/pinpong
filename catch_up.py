@@ -12,7 +12,7 @@ speed = 10
 finish = False
 speed_x = 3
 speed_y = 3
-
+font.init()
 # mixer.init()
 # mixer.music.load('')
 # mixer.music.play()
@@ -28,7 +28,6 @@ class GameSprite(sprite.Sprite):
         self.rect.y = player_y
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
-
 class Player(GameSprite):
     def update_L(self):
         key_button = key.get_pressed()
@@ -46,6 +45,10 @@ class Player(GameSprite):
 player_1 = Player('racket.png', 30, 200, 4, 50, 150)
 player_2 = Player('racket.png', 620, 200, 4, 50, 150)
 ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50)
+font1 = font.Font(None, 35)
+loser1 = font1.render('игрок номер 1 проиграл', True, (180, 0, 0))
+loser2 = font1.render('игрок номер 2 проиграл', True, (180, 0, 0))
+
 
 while game:
     for i in event.get():
@@ -64,6 +67,11 @@ while game:
             speed_x *= -1
         if ball.rect.y > win_height - 50 or ball.rect.y < 0:
             speed_y *= -1 
+        if ball.rect.x < 0:
+            window.blit(loser1, (200, 200))
+            finish = True
+        if ball.rect.x > win_width:
+            window.blit(loser2, (200, 200))
+            finish = True
     display.update()
-    clock.tick(60) 
-
+    clock.tick(60)
